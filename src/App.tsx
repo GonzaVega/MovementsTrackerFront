@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Route, Routes } from "react-router-dom";
+import {
+  Outlet,
+  Route,
+  Routes,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import "./App.css";
 import { isTemplateSpan } from "typescript";
 import ItemInfo from "./testComponents/ItemInfo";
@@ -15,6 +21,12 @@ import NewMovement from "./Movements/Movement/NewMovement";
 import UserNavbar from "./NavBar/UserNavbar";
 import { MovementsProvider } from "./context/context";
 import { BalanceProvider } from "./context/balanceContext";
+import { AuthProvider } from "./context/authContext";
+import { Login } from "./Authentication/login";
+import RegisterForm from "./Authentication/Register/RegisterForm";
+import RegistrationModal from "./Authentication/Register/RegistrationModal";
+import SuccessfulRegistrationRoute from "./Routes/SuccessfulRegistrationRoute";
+
 export interface User {
   id: number;
   name: string;
@@ -49,26 +61,37 @@ function App() {
 
   return (
     <div className="App">
-      <NavBar />
-      <Header />
-      <div className="container">
-        <MovementsProvider>
-          <BalanceProvider>
-            <Balance />
-            <IncomeExpense />
-            <TransactionList />
-            <UserNavbar />
-            <NewMovement />
-          </BalanceProvider>
-        </MovementsProvider>
-      </div>
-      <div>
-        <Routes>
-          <Route path="/Movements" element={<MovementsRoute />} />
-          <Route path="/Users" element={<UsersRoute />} />
-          <Route path="/Units" element={<UnitsRoute />} />
-        </Routes>
-      </div>
+      <AuthProvider>
+        <NavBar />
+        <RegisterForm />
+        <Login />
+
+        <Header />
+        <div className="container">
+          <MovementsProvider>
+            <BalanceProvider>
+              <Balance />
+              <IncomeExpense />
+              <TransactionList />
+              <UserNavbar />
+              <NewMovement />
+            </BalanceProvider>
+          </MovementsProvider>
+        </div>
+        <div>
+          <Routes>
+            {/* <Route path="*" element={<App />} /> */}
+            <Route path="/Movements" element={<MovementsRoute />} />
+            <Route path="/Users" element={<UsersRoute />} />
+            <Route path="/Units" element={<UnitsRoute />} />
+            <Route
+              path="/successfulregistration"
+              element={<SuccessfulRegistrationRoute />}
+            />
+          </Routes>
+          <Outlet />
+        </div>
+      </AuthProvider>
     </div>
   );
 }

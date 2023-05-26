@@ -2,7 +2,7 @@ import NewMovement from "./Movement/NewMovement";
 const Movements = () => {
   return (
     <div>
-      <p>Movements Component</p>
+      <h1>Movements Component</h1>
       <NewMovement />
     </div>
   );

@@ -12,12 +12,13 @@ const UserNavbar: React.FC = () => {
   useEffect(() => {
     const userOptions = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:3001/users.json");
+        const response = await fetch("http://127.0.0.1:3001/api/users.json");
 
         if (!response.ok) {
           throw new Error("Something went wrong!");
         }
         const dropdownLabel = "Partners";
+
         const data = await response.json();
 
         const itemOptions = data.map((item: any) => ({

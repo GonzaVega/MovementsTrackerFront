@@ -1,5 +1,5 @@
 import React, { createContext, useEffect, useState, ReactNode } from "react";
-import { fetchFunction } from "../helpers/fetch";
+
 export const BalanceContext = createContext<number>(0);
 
 export const BalanceProvider: React.FC<React.PropsWithChildren<{}>> = ({
@@ -10,7 +10,7 @@ export const BalanceProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const fetchBalance = async () => {
     try {
       const response = await fetch(
-        "http://127.0.0.1:3001/movements/balance.json"
+        "http://127.0.0.1:3001/api/movements/balance.json"
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");

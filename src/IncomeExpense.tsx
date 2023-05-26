@@ -6,7 +6,7 @@ const IncomeExpense = () => {
   const fetchExpensesIncome = async () => {
     try {
       const expenseResponse = await fetch(
-        "http://127.0.0.1:3001/movements/expense_balance.json"
+        "http://127.0.0.1:3001/api/movements/expense_balance.json"
       );
       if (!expenseResponse.ok) {
         throw new Error("Something went wrong!");
@@ -18,7 +18,7 @@ const IncomeExpense = () => {
     }
     try {
       const incomeResponse = await fetch(
-        "http://127.0.0.1:3001/movements/income_balance.json"
+        "http://127.0.0.1:3001/api/movements/income_balance.json"
       );
       if (!incomeResponse.ok) {
         throw new Error("Something went wrong!");

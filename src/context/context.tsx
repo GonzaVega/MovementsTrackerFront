@@ -28,7 +28,7 @@ export const MovementsProvider: React.FC<React.PropsWithChildren<{}>> = ({
 
   const fetchMovements = async () => {
     try {
-      const response = await fetch("http://127.0.0.1:3001/movements.json");
+      const response = await fetch("http://127.0.0.1:3001/api/movements.json");
       if (!response.ok) {
         throw new Error("Something went wrong!");
       }
@@ -41,7 +41,7 @@ export const MovementsProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const deleteMovement = async (id: number) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:3001/movements/${id}.json`,
+        `http://127.0.0.1:3001/api/movements/${id}.json`,
         {
           method: "DELETE",
         }
