@@ -21,7 +21,9 @@ body {
 
 .container {
   margin: 30px auto;
-  width: 350px;
+  width: 500px;
+  max-width: 100%;
+  position: relative;
 }
 
 h1 {
@@ -91,7 +93,7 @@ input[type="password"] {
 
 .btn {
   cursor: pointer;
-  background-color: #9c88ff;
+  background-color: #8db8fe;
   box-shadow: var(--box-shadow);
   color: #fff;
   border: 0;
@@ -101,6 +103,9 @@ input[type="password"] {
   padding: 10px;
   width: 100%;
 }
+.btn:hover {
+  background-color: #3e88ff;
+}
 
 .btn:focus,
 .delete-btn:focus {
@@ -108,7 +113,7 @@ input[type="password"] {
 }
 .nav-btn {
   cursor: pointer;
-  background-color: #9c88ff;
+  background-color: #8db8fe;
   box-shadow: var(--box-shadow);
   color: #fff;
   border: 0;
@@ -191,4 +196,9 @@ input[type="password"] {
 
 .list li:hover .delete-btn {
   opacity: 1;
+}
+
+.errortxt {
+  color: red;
+  text-align: center;
 }

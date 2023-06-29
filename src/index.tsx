@@ -3,7 +3,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
-
+import { AuthProvider } from "./context/authContext";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
@@ -13,7 +13,9 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter>
     <React.Fragment>
-      <App />
+      <AuthProvider>
+        <App />
+      </AuthProvider>
     </React.Fragment>
   </BrowserRouter>
 );

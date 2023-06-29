@@ -37,7 +37,6 @@ const UserNavbar: React.FC = () => {
   const handleOptionSelected = (option: Option) => {
     setSelectedOption(option);
   };
-  // console.log(selectedOption);
   return (
     <>
       <Dropdown

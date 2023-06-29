@@ -1,15 +1,21 @@
 import { createContext, useContext, useState } from "react";
 
-interface AuthContextProps {
+export interface AuthContextProps {
   isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   accessToken: string | null;
+  client: string | null;
+  uid: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
 
 export const AuthContext = createContext<AuthContextProps>({
   isAuthenticated: false,
+  setIsAuthenticated: () => {},
   accessToken: null,
+  client: null,
+  uid: null,
   login: async () => {},
   logout: () => {},
 });
@@ -22,7 +28,11 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem("accessToken")
   );
-  const isAuthenticated = !!accessToken;
+  const [client, setClient] = useState<string | null>(null);
+  const [uid, setUid] = useState<string | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
+    Boolean(accessToken !== null)
+  );
 
   const login = async (email: string, password: string) => {
     const response = await fetch("http://127.0.0.1:3001/api/auth/sign_in", {
@@ -34,25 +44,65 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
     });
 
     if (response.ok) {
-      const headers = response.headers;
-      // ver aca hay problemas con el tipo de la variable token, le puse any y se soluciono, pero verificar.
-      const token: any = headers.get("access-token");
-      localStorage.setItem("accessToken", token);
-      setAccessToken(token);
+      const headers = {
+        token: response.headers.get("access-token"),
+        uid: response.headers.get("uid"),
+        client: response.headers.get("client"),
+      };
+
+      if (headers.token) {
+        localStorage.setItem("accessToken", headers.token);
+        setAccessToken(headers.token);
+        setUid(headers.uid);
+        setClient(headers.client);
+        setIsAuthenticated(true);
+      }
     } else {
       throw new Error("Failed to login");
     }
-    console.log("firing login");
   };
+  const logout = async () => {
+    try {
+      const headers: Record<string, string> = {
+        "Content-Type": "application/json",
+      };
 
-  const logout = () => {
-    localStorage.removeItem("accessToken");
-    setAccessToken(null);
+      if (accessToken && client && uid) {
+        headers["access-token"] = accessToken;
+        headers["client"] = client;
+        headers["uid"] = uid;
+      }
+
+      const response = await fetch("http://127.0.0.1:3001/api/auth/sign_out", {
+        method: "DELETE",
+        headers,
+      });
+
+      if (response.ok) {
+        localStorage.removeItem("accessToken");
+        setAccessToken(null);
+        setUid(null);
+        setClient(null);
+        setIsAuthenticated(false);
+      } else {
+        console.error("Error en el cierre de sesión");
+      }
+    } catch (error) {
+      console.error("Error en la solicitud", error);
+    }
   };
 
   return (
     <AuthContext.Provider
-      value={{ isAuthenticated, accessToken, login, logout }}
+      value={{
+        isAuthenticated,
+        setIsAuthenticated,
+        accessToken,
+        client,
+        uid,
+        login,
+        logout,
+      }}
     >
       {children}
     </AuthContext.Provider>

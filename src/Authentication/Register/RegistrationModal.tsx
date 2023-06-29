@@ -16,7 +16,7 @@ const RegistrationModal: React.FC<ModalProps> = ({ onClose }) => {
   // };
 
   const registrationModalMsg: string =
-    "Welcome to the app 'here we could put the new user's name'";
+    "Welcome to the app, please login for the first time";
 
   openModal(registrationModalMsg);
 

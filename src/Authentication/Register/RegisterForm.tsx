@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { register, UserModel } from "./userService";
-
+import { useAuth, AuthContextProps } from "../../context/authContext";
+import { ModalContext } from "../../context/modalContext";
 // interface RegisterFormProps {
 //   onSubmit: (
 //     email: string,
@@ -19,6 +20,7 @@ const RegisterForm: React.FC = () => {
   const [unitId, setUnitId] = useState(0);
 
   const history = useNavigate();
+  const authContext = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -30,11 +32,30 @@ const RegisterForm: React.FC = () => {
       password: password,
       password_confirmation: passwordConfirmation,
     };
+    const resetForm = () => {
+      setEmail("");
+      setPassword("");
+      setPasswordConfirmation("");
+      setName("");
+      setUnitId(0);
+    };
+
     if (registerFormData.password === registerFormData.password_confirmation) {
-      register(registerFormData);
-      console.log(typeof unitId);
-      history("/");
+      try {
+        await register(registerFormData, authContext);
+        // await authContext.login(email, password); proyecto de inicio de sesion automatico al registrar usuario.
+
+        alert(
+          "A confirmation e-mail was sent to the entered e-mail account, please check it"
+        );
+        resetForm();
+        history("/");
+      } catch (error) {
+        resetForm();
+        alert("Failed to register user");
+      }
     } else {
+      resetForm();
       alert("The password confirmation has failed! please try again");
     }
   };

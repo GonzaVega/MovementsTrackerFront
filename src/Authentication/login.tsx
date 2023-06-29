@@ -1,28 +1,31 @@
-import { useAuth, AuthProvider } from "../context/authContext";
-import { useState } from "react";
+import { useAuth } from "../context/authContext";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const Login = () => {
-  const { isAuthenticated, login } = useAuth();
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
+  const { isAuthenticated, login, setIsAuthenticated } = useAuth();
   const history = useNavigate();
 
   const handleLogin = async () => {
     try {
       await login(email, password);
       if (isAuthenticated) {
-        history("/");
-        console.log("login working");
+        setIsAuthenticated(true);
+        // history("/");
       }
     } catch (error) {
+      setError("Failed to login. Please check your credentials.");
       console.error(error);
     }
   };
-
+  useEffect(() => {}, []);
   return (
     <div>
       <h2>Login</h2>
+      {error && <h3 className="errortxt">{error}</h3>}
       <label>
         Email:
         <input
@@ -32,7 +35,6 @@ export const Login = () => {
         />
       </label>
       <label>
-        {" "}
         Password:
         <input
           type="password"

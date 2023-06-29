@@ -1,3 +1,5 @@
+import { AuthContextProps } from "../../context/authContext";
+
 export interface UserModel {
   email: string;
   name: string;
@@ -6,7 +8,7 @@ export interface UserModel {
   password_confirmation: string;
 }
 
-export async function register(user: UserModel) {
+export async function register(user: UserModel, AuthContext: AuthContextProps) {
   const response = await fetch("http://127.0.0.1:3001/api/auth", {
     method: "POST",
     headers: {
@@ -14,10 +16,22 @@ export async function register(user: UserModel) {
     },
     body: JSON.stringify(user),
   });
-  console.log(user);
-  console.log(typeof user.unit_id);
+  if (response.ok) {
+    const headers = {
+      token: response.headers.get("access-token"),
+      uid: response.headers.get("uid"),
+      client: response.headers.get("client"),
+    };
+
+    if (headers.token) {
+      localStorage.setItem("accessToken", headers.token);
+      AuthContext.accessToken = headers.token;
+      AuthContext.uid = headers.uid;
+      AuthContext.client = headers.client;
+      AuthContext.isAuthenticated = true;
+    }
+  }
   if (!response.ok) {
     throw new Error("Failed to register user");
   }
-  console.log("response from userService working");
 }

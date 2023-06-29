@@ -1,11 +1,5 @@
-import React, { useState } from "react";
-import {
-  Outlet,
-  Route,
-  Routes,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import React, { useState, useContext, useEffect } from "react";
+import { Outlet, Route, Routes } from "react-router-dom";
 import "./App.css";
 import { isTemplateSpan } from "typescript";
 import ItemInfo from "./testComponents/ItemInfo";
@@ -21,11 +15,13 @@ import NewMovement from "./Movements/Movement/NewMovement";
 import UserNavbar from "./NavBar/UserNavbar";
 import { MovementsProvider } from "./context/context";
 import { BalanceProvider } from "./context/balanceContext";
-import { AuthProvider } from "./context/authContext";
-import { Login } from "./Authentication/login";
+import { useAuth } from "./context/authContext";
+import { Login } from "./Authentication/Login";
 import RegisterForm from "./Authentication/Register/RegisterForm";
 import RegistrationModal from "./Authentication/Register/RegistrationModal";
 import SuccessfulRegistrationRoute from "./Routes/SuccessfulRegistrationRoute";
+import Logout from "./Authentication/Logout";
+import { ModalContext, ModalProvider } from "./context/modalContext";
 
 export interface User {
   id: number;
@@ -39,35 +35,19 @@ export interface User {
 }
 
 function App() {
-  const [testData, setTestData] = useState<User[]>([]);
+  const { isAuthenticated, accessToken } = useAuth();
+  const { closeModal } = useContext(ModalContext);
 
-  const fetchUserHandler = async () => {
-    try {
-      const response = await fetch("http://127.0.0.1:3001/users.json");
-
-      if (!response.ok) {
-        throw new Error("Something went wrong!");
-      }
-      const data = await response.json();
-
-      setTestData(data);
-    } catch (error: any) {
-      console.log(error.message);
-    }
-    console.log(testData);
+  const handleIsLoggedIn = (event: any) => {
+    event.preventDefault();
   };
 
-  // manejar logica de inicio de sesion aca con componentes condicionales.
-
-  return (
-    <div className="App">
-      <AuthProvider>
-        <NavBar />
-        <RegisterForm />
-        <Login />
-
-        <Header />
+  let appRendering;
+  if (isAuthenticated) {
+    appRendering = (
+      <div className="App">
         <div className="container">
+          <Logout />
           <MovementsProvider>
             <BalanceProvider>
               <Balance />
@@ -77,23 +57,40 @@ function App() {
               <NewMovement />
             </BalanceProvider>
           </MovementsProvider>
+          <div>
+            <Routes>
+              {/* <Route path="*" element={<App />} /> */}
+              <Route path="/Movements" element={<MovementsRoute />} />
+              <Route path="/Users" element={<UsersRoute />} />
+              <Route path="/Units" element={<UnitsRoute />} />
+              <Route
+                path="/successfulregistration"
+                element={<SuccessfulRegistrationRoute />}
+              />
+            </Routes>
+            <Outlet />
+          </div>
         </div>
-        <div>
-          <Routes>
-            {/* <Route path="*" element={<App />} /> */}
-            <Route path="/Movements" element={<MovementsRoute />} />
-            <Route path="/Users" element={<UsersRoute />} />
-            <Route path="/Units" element={<UnitsRoute />} />
-            <Route
-              path="/successfulregistration"
-              element={<SuccessfulRegistrationRoute />}
-            />
-          </Routes>
-          <Outlet />
-        </div>
-      </AuthProvider>
-    </div>
-  );
-}
+      </div>
+    );
+  } else {
+    appRendering = (
+      <div className="App">
+        <NavBar />
+        <Login />
 
+        <RegisterForm />
+
+        <Routes>
+          <Route
+            path="/successfulregistration"
+            element={<SuccessfulRegistrationRoute />}
+          />
+        </Routes>
+      </div>
+    );
+  }
+
+  return appRendering;
+}
 export default App;
