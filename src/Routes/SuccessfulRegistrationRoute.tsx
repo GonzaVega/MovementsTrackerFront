@@ -2,7 +2,6 @@ import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import RegistrationModal from "../Authentication/Register/RegistrationModal";
 import { ModalProvider, ModalContext } from "../context/modalContext";
-import { Login } from "../Authentication/Login";
 
 const SuccessfulRegistrationRoute = () => {
   const history = useNavigate();
@@ -13,10 +12,6 @@ const SuccessfulRegistrationRoute = () => {
     history("/");
   };
 
-  return (
-    <ModalProvider>
-      <RegistrationModal onClose={handleModalClose} />
-    </ModalProvider>
-  );
+  return <RegistrationModal onClose={handleModalClose} />;
 };
 export default SuccessfulRegistrationRoute;

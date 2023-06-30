@@ -9,7 +9,8 @@ export const Login = () => {
   const { isAuthenticated, login, setIsAuthenticated } = useAuth();
   const history = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event?.preventDefault();
     try {
       await login(email, password);
       if (isAuthenticated) {
@@ -21,30 +22,32 @@ export const Login = () => {
       console.error(error);
     }
   };
-  useEffect(() => {}, []);
+  // useEffect(() => {}, []);
   return (
     <div>
       <h2>Login</h2>
       {error && <h3 className="errortxt">{error}</h3>}
-      <label>
-        Email:
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-      </label>
-      <label>
-        Password:
-        <input
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </label>
-      <button className="btn" onClick={handleLogin}>
-        Login
-      </button>
+      <form className="login-form" onSubmit={handleLogin}>
+        <label>
+          Email:
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
+        <label>
+          Password:
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </label>
+        <button className="btn" type="submit">
+          Login
+        </button>
+      </form>
     </div>
   );
 };

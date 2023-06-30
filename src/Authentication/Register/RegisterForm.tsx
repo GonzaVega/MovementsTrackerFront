@@ -3,16 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { register, UserModel } from "./userService";
 import { useAuth, AuthContextProps } from "../../context/authContext";
 import { ModalContext } from "../../context/modalContext";
-// interface RegisterFormProps {
-//   onSubmit: (
-//     email: string,
-//     password: string,
-//     name: string,
-//     unitId: number | undefined
-//   ) => void;
-// }
 
-const RegisterForm: React.FC = () => {
+interface RegisterFormProps {
+  closeModal: () => void;
+}
+
+const RegisterForm: React.FC<RegisterFormProps> = ({
+  closeModal,
+}: RegisterFormProps) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirmation, setPasswordConfirmation] = useState("");
@@ -49,7 +47,7 @@ const RegisterForm: React.FC = () => {
           "A confirmation e-mail was sent to the entered e-mail account, please check it"
         );
         resetForm();
-        history("/");
+        // history("/");
       } catch (error) {
         resetForm();
         alert("Failed to register user");
@@ -59,10 +57,14 @@ const RegisterForm: React.FC = () => {
       alert("The password confirmation has failed! please try again");
     }
   };
+  const handleCancel = () => {
+    closeModal();
+  };
 
   return (
     <>
       <h2>Sign Up</h2>
+
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email:</label>

@@ -35,32 +35,64 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   );
 
   const login = async (email: string, password: string) => {
-    const response = await fetch("http://127.0.0.1:3001/api/auth/sign_in", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch("http://127.0.0.1:3001/api/auth/sign_in", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (response.ok) {
-      const headers = {
-        token: response.headers.get("access-token"),
-        uid: response.headers.get("uid"),
-        client: response.headers.get("client"),
-      };
+      if (response.ok) {
+        const headers = {
+          token: response.headers.get("access-token"),
+          uid: response.headers.get("uid"),
+          client: response.headers.get("client"),
+        };
 
-      if (headers.token) {
-        localStorage.setItem("accessToken", headers.token);
-        setAccessToken(headers.token);
-        setUid(headers.uid);
-        setClient(headers.client);
-        setIsAuthenticated(true);
+        if (headers.token) {
+          localStorage.setItem("accessToken", headers.token);
+          setAccessToken(headers.token);
+          setUid(headers.uid);
+          setClient(headers.client);
+          setIsAuthenticated(true);
+        }
+      } else {
+        throw new Error("Failed to login");
       }
-    } else {
+    } catch (error) {
+      console.error("Error logging in", error);
       throw new Error("Failed to login");
     }
   };
+  // const login = async (email: string, password: string) => {
+  //   const response = await fetch("http://127.0.0.1:3001/api/auth/sign_in", {
+  //     method: "POST",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({ email, password }),
+  //   });
+
+  //   if (response.ok) {
+  //     const headers = {
+  //       token: response.headers.get("access-token"),
+  //       uid: response.headers.get("uid"),
+  //       client: response.headers.get("client"),
+  //     };
+
+  //     if (headers.token) {
+  //       localStorage.setItem("accessToken", headers.token);
+  //       setAccessToken(headers.token);
+  //       setUid(headers.uid);
+  //       setClient(headers.client);
+  //       setIsAuthenticated(true);
+  //     }
+  //   } else {
+  //     throw new Error("Failed to login");
+  //   }
+  // };
   const logout = async () => {
     try {
       const headers: Record<string, string> = {

@@ -19,9 +19,6 @@ const TransactionList = () => {
             <span>
               {item.concept === "income" ? item.amount : "-" + item.amount}
             </span>
-            <button className="delete-btn" onClick={handleDelete(item.id)}>
-              x
-            </button>
           </li>
         </ul>
       ))}

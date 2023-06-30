@@ -22,6 +22,8 @@ import RegistrationModal from "./Authentication/Register/RegistrationModal";
 import SuccessfulRegistrationRoute from "./Routes/SuccessfulRegistrationRoute";
 import Logout from "./Authentication/Logout";
 import { ModalContext, ModalProvider } from "./context/modalContext";
+import Modal from "./Modal/Modal";
+import logo from "./Shared Resources/Logo Movements Tracker.png";
 
 export interface User {
   id: number;
@@ -36,21 +38,37 @@ export interface User {
 
 function App() {
   const { isAuthenticated, accessToken } = useAuth();
-  const { closeModal } = useContext(ModalContext);
+  const [isNewUser, setIsNewUser] = useState<boolean>(false);
+  const [userOption, setUserOption] = useState<boolean>(true);
 
-  const handleIsLoggedIn = (event: any) => {
+  const handleNewUser = (event: React.MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
+    setUserOption(false);
+    setIsNewUser(true);
+  };
+
+  const handleNotRegister = () => {
+    setUserOption(true);
+    setIsNewUser(false);
   };
 
   let appRendering;
   if (isAuthenticated) {
     appRendering = (
       <div className="App">
-        <div className="container">
+        <div className="logo-container">
           <Logout />
+          <img src={logo} alt="Logo Movements Tracker" />
+          <div className="header-container">
+            <Header />
+          </div>
+        </div>
+        <div className="container">
           <MovementsProvider>
             <BalanceProvider>
-              <Balance />
+              <div className="balance-container">
+                <Balance />
+              </div>
               <IncomeExpense />
               <TransactionList />
               <UserNavbar />
@@ -63,10 +81,6 @@ function App() {
               <Route path="/Movements" element={<MovementsRoute />} />
               <Route path="/Users" element={<UsersRoute />} />
               <Route path="/Units" element={<UnitsRoute />} />
-              <Route
-                path="/successfulregistration"
-                element={<SuccessfulRegistrationRoute />}
-              />
             </Routes>
             <Outlet />
           </div>
@@ -75,18 +89,25 @@ function App() {
     );
   } else {
     appRendering = (
-      <div className="App">
-        <NavBar />
-        <Login />
-
-        <RegisterForm />
-
-        <Routes>
-          <Route
-            path="/successfulregistration"
-            element={<SuccessfulRegistrationRoute />}
-          />
-        </Routes>
+      <div>
+        <img src={logo} alt="Logo Movements Tracker" />
+        <h2 className="welcome-txt">Welcome to Movements Tracker</h2>
+        <div className="App">
+          <NavBar />
+          <Login />
+          {userOption && (
+            <button className="btn-ok" onClick={handleNewUser}>
+              Not a member? Create new user
+            </button>
+          )}
+          <Routes>
+            <Route
+              path="/successfulregistration"
+              element={<SuccessfulRegistrationRoute />}
+            />
+          </Routes>
+          {isNewUser && <Modal restoreAppState={handleNotRegister} />}
+        </div>
       </div>
     );
   }
