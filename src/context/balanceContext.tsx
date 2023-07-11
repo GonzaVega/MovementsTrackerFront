@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState, ReactNode } from "react";
+import { useAuth } from "./authContext";
 
 export const BalanceContext = createContext<number>(0);
 
@@ -6,11 +7,20 @@ export const BalanceProvider: React.FC<React.PropsWithChildren<{}>> = ({
   children,
 }) => {
   const [balance, setBalance] = useState<number>(0);
+  const { accessToken, client, uid } = useAuth();
 
   const fetchBalance = async () => {
     try {
       const response = await fetch(
-        "http://127.0.0.1:3001/api/movements/balance.json"
+        "http://127.0.0.1:3001/api/movements/balance.json",
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": accessToken!,
+            uid: uid!,
+            client: client!,
+          },
+        }
       );
       if (!response.ok) {
         throw new Error("Something went wrong!");

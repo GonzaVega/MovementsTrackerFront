@@ -28,8 +28,10 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [accessToken, setAccessToken] = useState<string | null>(
     localStorage.getItem("accessToken")
   );
-  const [client, setClient] = useState<string | null>(null);
-  const [uid, setUid] = useState<string | null>(null);
+  const [client, setClient] = useState<string | null>(
+    localStorage.getItem("client")
+  );
+  const [uid, setUid] = useState<string | null>(localStorage.getItem("uid"));
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     Boolean(accessToken !== null)
   );
@@ -51,13 +53,16 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           client: response.headers.get("client"),
         };
 
-        if (headers.token) {
+        if (headers.token && headers.uid && headers.client) {
           localStorage.setItem("accessToken", headers.token);
+          localStorage.setItem("uid", headers.uid);
+          localStorage.setItem("client", headers.client);
           setAccessToken(headers.token);
           setUid(headers.uid);
           setClient(headers.client);
           setIsAuthenticated(true);
         }
+        console.log(headers, accessToken, uid, client);
       } else {
         throw new Error("Failed to login");
       }
@@ -66,33 +71,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       throw new Error("Failed to login");
     }
   };
-  // const login = async (email: string, password: string) => {
-  //   const response = await fetch("http://127.0.0.1:3001/api/auth/sign_in", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({ email, password }),
-  //   });
 
-  //   if (response.ok) {
-  //     const headers = {
-  //       token: response.headers.get("access-token"),
-  //       uid: response.headers.get("uid"),
-  //       client: response.headers.get("client"),
-  //     };
-
-  //     if (headers.token) {
-  //       localStorage.setItem("accessToken", headers.token);
-  //       setAccessToken(headers.token);
-  //       setUid(headers.uid);
-  //       setClient(headers.client);
-  //       setIsAuthenticated(true);
-  //     }
-  //   } else {
-  //     throw new Error("Failed to login");
-  //   }
-  // };
   const logout = async () => {
     try {
       const headers: Record<string, string> = {
@@ -111,7 +90,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
       });
 
       if (response.ok) {
-        localStorage.removeItem("accessToken");
+        localStorage.clear();
         setAccessToken(null);
         setUid(null);
         setClient(null);
