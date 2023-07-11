@@ -44,7 +44,7 @@ export const MovementsProvider: React.FC<React.PropsWithChildren<{}>> = ({
       }
 
       const data = await response.json();
-      console.log(data);
+
       setMovements(data);
     } catch (error: any) {
       console.log(error.message);

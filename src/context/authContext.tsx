@@ -62,7 +62,6 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           setClient(headers.client);
           setIsAuthenticated(true);
         }
-        console.log(headers, accessToken, uid, client);
       } else {
         throw new Error("Failed to login");
       }

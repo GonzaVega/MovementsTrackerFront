@@ -29,7 +29,7 @@ export const ModalProvider: React.FC<React.PropsWithChildren<{}>> = ({
     setIsOpen(false);
     setMessage("");
   };
-  console.log(isOpen);
+
   const value = {
     isOpen,
     message,

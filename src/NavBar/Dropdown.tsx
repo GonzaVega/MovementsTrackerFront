@@ -18,11 +18,6 @@ const Dropdown: React.FC<DropdownProps> = ({
   onOptionSelected,
   dropdownCategory,
 }) => {
-  // const [category, setCategory] = useState<string>("");
-  // useEffect(() => {
-  //   setCategory(dropdownCategory);
-  // }, []);
-  // console.log(selectedOption);
   return (
     <select
       className="nav-btn-drop"
