@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { Option } from "./Dropdown";
+import { useAuth } from "../context/authContext";
 
 const UserNavbar: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<Option | undefined>(
@@ -9,10 +10,18 @@ const UserNavbar: React.FC = () => {
   );
   const [userOption, setUserOption] = useState<Option[]>([]);
   const [categoryDropdown, setCategoryDropdown] = useState<string>("");
+  const { accessToken, client, uid } = useAuth();
   useEffect(() => {
     const userOptions = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:3001/api/users.json");
+        const response = await fetch("http://localhost:3001/api/users.json", {
+          headers: {
+            "Content-Type": "application/json",
+            "access-token": accessToken!,
+            uid: uid!,
+            client: client!,
+          },
+        });
 
         if (!response.ok) {
           throw new Error("Something went wrong!");

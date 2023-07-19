@@ -71,8 +71,8 @@ function App() {
               </div>
               <IncomeExpense />
               <TransactionList />
-              <UserNavbar />
               <NewMovement />
+              <UserNavbar />
             </BalanceProvider>
           </MovementsProvider>
           <div>

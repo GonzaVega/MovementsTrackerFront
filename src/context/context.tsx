@@ -15,11 +15,13 @@ type Movement = {
 type MovementsContextValue = {
   movements: Movement[];
   deleteMovement: (id: number) => Promise<void>;
+  // fetchMovements: () => void;
 };
 
 export const MovementsContext = createContext<MovementsContextValue>({
   movements: [],
   deleteMovement: async () => {},
+  // fetchMovements: async () => {},
 });
 
 export const MovementsProvider: React.FC<React.PropsWithChildren<{}>> = ({
@@ -82,7 +84,11 @@ export const MovementsProvider: React.FC<React.PropsWithChildren<{}>> = ({
     fetchMovements();
   }, []);
 
-  const value: MovementsContextValue = { movements, deleteMovement };
+  const value: MovementsContextValue = {
+    movements,
+    deleteMovement,
+    // fetchMovements,
+  };
 
   return (
     <MovementsContext.Provider value={value}>

@@ -2,7 +2,6 @@ import React, { useContext, useState, useEffect } from "react";
 import { BalanceContext } from "./context/balanceContext";
 const Balance = () => {
   const balance = useContext(BalanceContext);
-  // todo: prever el caso en que el balance sea negativo
 
   return (
     <div>

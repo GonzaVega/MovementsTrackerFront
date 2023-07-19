@@ -15,6 +15,9 @@ const TransactionList = () => {
       {movements.map((item: any) => (
         <ul id="list" className="list" key={item.id}>
           <li className={item.concept === "income" ? "plus" : "minus"}>
+            <button className="delete-btn" onClick={handleDelete(item.id)}>
+              x
+            </button>
             {item.description}{" "}
             <span>
               {item.concept === "income" ? item.amount : "-" + item.amount}

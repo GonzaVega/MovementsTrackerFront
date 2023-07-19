@@ -7,7 +7,7 @@ export const Login = () => {
   const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const { isAuthenticated, login, setIsAuthenticated } = useAuth();
-  const history = useNavigate();
+  // const history = useNavigate();
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event?.preventDefault();

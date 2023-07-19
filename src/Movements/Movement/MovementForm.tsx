@@ -53,7 +53,7 @@ const movementFormReducer = (
 const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
   const [formState, dispatch] = useReducer(movementFormReducer, {
     amount: 0,
-    concept: 0,
+    concept: 1,
     description: "",
     date: new Date().toISOString().slice(0, 16),
     unit_id: 0,
@@ -85,8 +85,9 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
     dispatch({ type: "update_amount", payload: parseInt(event.target.value) });
   };
 
-  const handleConceptChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "update_concept", payload: parseInt(event.target.value) });
+  const handleConceptChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = parseInt(event.target.value);
+    dispatch({ type: "update_concept", payload: selectedValue });
   };
 
   const handleDescriptionChange = (
@@ -124,11 +125,14 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
       <br />
       <label>
         Concept:
-        <input
-          type="number"
+        <select
+          className="form-select"
           value={formState.concept}
           onChange={handleConceptChange}
-        />
+        >
+          <option value={1}>Income</option>
+          <option value={2}>Expense</option>
+        </select>
       </label>
       <br />
       <label>

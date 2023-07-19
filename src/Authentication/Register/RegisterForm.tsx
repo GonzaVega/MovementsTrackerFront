@@ -17,7 +17,7 @@ const RegisterForm: React.FC<RegisterFormProps> = ({
   const [name, setName] = useState("");
   const [unitId, setUnitId] = useState(0);
 
-  const history = useNavigate();
+  // const history = useNavigate();
   const authContext = useAuth();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

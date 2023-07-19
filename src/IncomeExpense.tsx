@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useAuth } from "./context/authContext";
+import { MovementsContext } from "./context/context";
 
 const IncomeExpense = () => {
   const [totalExpenses, setTotalExpenses] = useState();
   const [totalIncome, setTotalIncome] = useState();
   const { accessToken, client, uid } = useAuth();
-
+  const { deleteMovement, movements } = useContext(MovementsContext);
   const fetchExpensesIncome = async () => {
     try {
       const expenseResponse = await fetch(

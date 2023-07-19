@@ -25,6 +25,9 @@ body {
   max-width: 100%;
   /* position: relative; */
   text-align: center;
+  display: inline-block;
+  justify-content: space-between;
+  align-items: center;
 }
 
 h1 {
@@ -76,22 +79,25 @@ h4 {
 }
 
 label {
-  display: inline-block;
-  margin: 10px 0;
+  display: block;
+  margin: 2px auto;
 }
 
 input[type="text"],
 input[type="number"],
 input[type="email"],
-input[type="password"] {
+input[type="password"],
+input[type="datetime-local"],
+select.form-select {
   border: 1px solid #dedede;
   border-radius: 2px;
-  display: flex; /*modificado de "block" */
+  display: block;
   font-size: 16px;
   padding: 10px;
   width: 100%;
+  margin: 0 auto;
+  text-align: justify;
 }
-
 .btn {
   cursor: pointer;
   background-color: #8db8fe;
@@ -205,15 +211,18 @@ input[type="password"] {
   background-color: #e74c3c;
   border: 0;
   color: #fff;
-  font-size: 20px;
+  font-size: 15px;
   line-height: 20px;
   padding: 2px 5px;
   position: absolute;
   top: 50%;
   left: 0;
   transform: translate(-100%, -50%);
-  opacity: 0;
+  opacity: 1;
   transition: opacity 0.3s ease;
+}
+.delete-btn:hover {
+  background-color: red;
 }
 
 .list li:hover .delete-btn {
@@ -238,7 +247,6 @@ input[type="password"] {
   align-items: center;
 
   margin-top: 20px;
-  /* padding-bottom: 10px; */
 }
 
 .logo-container img {
@@ -251,15 +259,14 @@ input[type="password"] {
 }
 
 .balance-container {
-  position: relative;
+  position: inherit;
   left: 20px;
   top: 50%;
   transform: translateY(-160%);
-  display: flex;
   align-items: center;
   z-index: 1;
   margin-bottom: -10%;
-  /* justify-content: space-between; */
+  display: flex;
 }
 
 .welcome-txt {

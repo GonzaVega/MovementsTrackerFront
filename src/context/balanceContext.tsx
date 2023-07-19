@@ -1,5 +1,12 @@
-import React, { createContext, useEffect, useState, ReactNode } from "react";
+import React, {
+  createContext,
+  useEffect,
+  useState,
+  ReactNode,
+  useContext,
+} from "react";
 import { useAuth } from "./authContext";
+import { MovementsContext } from "./context";
 
 export const BalanceContext = createContext<number>(0);
 
@@ -8,7 +15,7 @@ export const BalanceProvider: React.FC<React.PropsWithChildren<{}>> = ({
 }) => {
   const [balance, setBalance] = useState<number>(0);
   const { accessToken, client, uid } = useAuth();
-
+  const { deleteMovement, movements } = useContext(MovementsContext);
   const fetchBalance = async () => {
     try {
       const response = await fetch(
