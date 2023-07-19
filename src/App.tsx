@@ -17,11 +17,11 @@ import { MovementsProvider } from "./context/context";
 import { BalanceProvider } from "./context/balanceContext";
 import { useAuth } from "./context/authContext";
 import { Login } from "./Authentication/Login";
+import { UsersProvider } from "./context/usersContext";
 import RegisterForm from "./Authentication/Register/RegisterForm";
 import RegistrationModal from "./Authentication/Register/RegistrationModal";
 import SuccessfulRegistrationRoute from "./Routes/SuccessfulRegistrationRoute";
 import Logout from "./Authentication/Logout";
-import { ModalContext, ModalProvider } from "./context/modalContext";
 import Modal from "./Modal/Modal";
 import logo from "./Shared Resources/Logo Movements Tracker.png";
 
@@ -71,8 +71,10 @@ function App() {
               </div>
               <IncomeExpense />
               <TransactionList />
-              <NewMovement />
-              <UserNavbar />
+              <UsersProvider>
+                <NewMovement />
+                <UserNavbar />
+              </UsersProvider>
             </BalanceProvider>
           </MovementsProvider>
           <div>

@@ -1,4 +1,5 @@
-import React, { useReducer } from "react";
+import React, { useReducer, useContext } from "react";
+import { UsersContext } from "../../context/usersContext";
 
 export interface MovementFormState {
   amount: number;
@@ -59,7 +60,7 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
     unit_id: 0,
     user_id: 0,
   });
-
+  const { users } = useContext(UsersContext);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSubmit(
@@ -104,8 +105,9 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
     dispatch({ type: "update_unit_id", payload: parseInt(event.target.value) });
   };
 
-  const handleUserIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "update_user_id", payload: parseInt(event.target.value) });
+  const handleUserIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = parseInt(event.target.value);
+    dispatch({ type: "update_user_id", payload: selectedValue });
   };
 
   return (
@@ -164,11 +166,22 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
       <br />
       <label>
         User ID:
-        <input
+        <select
+          className="form-select"
+          value={formState.user_id}
+          onChange={handleUserIdChange}
+        >
+          {users.map((user: any) => (
+            <option key={user.id} value={user.id}>
+              {user.name}
+            </option>
+          ))}
+        </select>
+        {/* <input
           type="number"
           value={formState.user_id}
           onChange={handleUserIdChange}
-        />
+        /> */}
       </label>
       <br />
       <button className="btn" type="submit">

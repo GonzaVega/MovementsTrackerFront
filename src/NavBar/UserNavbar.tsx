@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { Option } from "./Dropdown";
-import { useAuth } from "../context/authContext";
+import { UsersContext, User } from "../context/usersContext";
 
 const UserNavbar: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<Option | undefined>(
@@ -10,39 +10,20 @@ const UserNavbar: React.FC = () => {
   );
   const [userOption, setUserOption] = useState<Option[]>([]);
   const [categoryDropdown, setCategoryDropdown] = useState<string>("");
-  const { accessToken, client, uid } = useAuth();
+  const { users } = useContext(UsersContext);
+
   useEffect(() => {
-    const userOptions = async () => {
-      try {
-        const response = await fetch("http://localhost:3001/api/users.json", {
-          headers: {
-            "Content-Type": "application/json",
-            "access-token": accessToken!,
-            uid: uid!,
-            client: client!,
-          },
-        });
+    const dropdownLabel = "Partners";
+    const itemOptions = users.map((user: User) => ({
+      label: user.name!,
+      value: JSON.stringify(user.id),
+    }));
 
-        if (!response.ok) {
-          throw new Error("Something went wrong!");
-        }
-        const dropdownLabel = "Partners";
+    setUserOption(itemOptions);
 
-        const data = await response.json();
+    setCategoryDropdown(dropdownLabel);
+  }, [users]);
 
-        const itemOptions = data.map((item: any) => ({
-          label: item.name,
-          value: item.id,
-        }));
-        setUserOption(itemOptions);
-        setCategoryDropdown(dropdownLabel);
-      } catch (error: any) {
-        console.log(error.message);
-        return [];
-      }
-    };
-    userOptions();
-  }, []);
   const handleOptionSelected = (option: Option) => {
     setSelectedOption(option);
   };

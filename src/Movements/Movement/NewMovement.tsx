@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Movement from "./Movement";
-import MovementForm, { MovementFormState } from "./MovementForm";
+import MovementForm from "./MovementForm";
 import { useAuth } from "../../context/authContext";
 import "../../Modal/Modal.css";
 
@@ -20,7 +20,7 @@ const NewMovement: React.FC = () => {
     unit_id: number,
     user_id: number
   ) => {
-    const res = await fetch("http://localhost:3001/api/movements", {
+    const response = await fetch("http://localhost:3001/api/movements", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -32,12 +32,12 @@ const NewMovement: React.FC = () => {
         movement: { amount, concept, description, date, unit_id, user_id },
       }),
     });
-    if (res.ok) {
-      const newMovement = await res.json();
+    if (response.ok) {
+      const newMovement = await response.json();
       setIsFormSubmited(true);
       setMovementCreation(newMovement);
     } else {
-      console.log(`Error: ${res.status} - ${res.statusText}`);
+      console.log(`Error: ${response.status} - ${response.statusText}`);
     }
   };
 
