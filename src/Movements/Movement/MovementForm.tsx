@@ -1,5 +1,6 @@
 import React, { useReducer, useContext } from "react";
 import { UsersContext } from "../../context/usersContext";
+import { UnitsContext } from "../../context/unitsContext";
 
 export interface MovementFormState {
   amount: number;
@@ -57,10 +58,11 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
     concept: 1,
     description: "",
     date: new Date().toISOString().slice(0, 16),
-    unit_id: 0,
+    unit_id: 1,
     user_id: 0,
   });
   const { users } = useContext(UsersContext);
+  const { units } = useContext(UnitsContext);
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     onSubmit(
@@ -101,8 +103,9 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
     dispatch({ type: "update_date", payload: event.target.value });
   };
 
-  const handleUnitIdChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch({ type: "update_unit_id", payload: parseInt(event.target.value) });
+  const handleUnitIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const selectedValue = parseInt(event.target.value);
+    dispatch({ type: "update_unit_id", payload: selectedValue });
   };
 
   const handleUserIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -157,11 +160,22 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
       <br />
       <label>
         Unit ID:
-        <input
+        <select
+          className="form-select"
+          value={formState.unit_id}
+          onChange={handleUnitIdChange}
+        >
+          {units.map((unit: any) => (
+            <option key={unit.id} value={unit.id}>
+              {unit.name}
+            </option>
+          ))}
+        </select>
+        {/* <input
           type="number"
           value={formState.unit_id}
           onChange={handleUnitIdChange}
-        />
+        /> */}
       </label>
       <br />
       <label>

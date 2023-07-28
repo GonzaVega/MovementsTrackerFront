@@ -3,37 +3,64 @@ import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { Option } from "./Dropdown";
 import { UsersContext, User } from "../context/usersContext";
+import { UnitsContext, Unit } from "../context/unitsContext";
 
 const UserNavbar: React.FC = () => {
-  const [selectedOption, setSelectedOption] = useState<Option | undefined>(
-    undefined
-  );
+  const [userSelectedOption, setUserSelectedOption] = useState<
+    Option | undefined
+  >(undefined);
+  const [unitSelectedOption, setUnitSelectedOption] = useState<
+    Option | undefined
+  >(undefined);
   const [userOption, setUserOption] = useState<Option[]>([]);
-  const [categoryDropdown, setCategoryDropdown] = useState<string>("");
+  const [unitOption, setUnitOption] = useState<Option[]>([]);
+  const [usersCategoryDropdown, setUsersCategoryDropdown] =
+    useState<string>("");
+  const [unitsCategoryDropdown, setunitsCategoryDropdown] =
+    useState<string>("");
   const { users } = useContext(UsersContext);
+  const { units } = useContext(UnitsContext);
 
   useEffect(() => {
-    const dropdownLabel = "Partners";
-    const itemOptions = users.map((user: User) => ({
+    const userDropdownLabel = "Partners";
+    const unitsDropdownLabel = "Units";
+    const userOptions = users.map((user: User) => ({
       label: user.name!,
       value: JSON.stringify(user.id),
     }));
 
-    setUserOption(itemOptions);
+    setUserOption(userOptions);
 
-    setCategoryDropdown(dropdownLabel);
-  }, [users]);
+    setUsersCategoryDropdown(userDropdownLabel);
 
-  const handleOptionSelected = (option: Option) => {
-    setSelectedOption(option);
+    const unitOption = units.map((unit: Unit) => ({
+      label: unit.name,
+      value: JSON.stringify(unit.id),
+      address: unit.address,
+    }));
+    setUnitOption(unitOption);
+    setunitsCategoryDropdown(unitsDropdownLabel);
+  }, [users, units]);
+
+  const handleUserOptionSelected = (option: Option) => {
+    setUserSelectedOption(option);
+  };
+  const handleUnitOptionSelected = (option: Option) => {
+    setUnitSelectedOption(option);
   };
   return (
     <>
       <Dropdown
         options={userOption}
-        selectedOption={selectedOption}
-        onOptionSelected={handleOptionSelected}
-        dropdownCategory={categoryDropdown}
+        selectedOption={userSelectedOption}
+        onOptionSelected={handleUserOptionSelected}
+        dropdownCategory={usersCategoryDropdown}
+      />
+      <Dropdown
+        options={unitOption}
+        selectedOption={unitSelectedOption}
+        onOptionSelected={handleUnitOptionSelected}
+        dropdownCategory={unitsCategoryDropdown}
       />
       <button className="nav-btn">
         <Link to="/units">Units</Link>

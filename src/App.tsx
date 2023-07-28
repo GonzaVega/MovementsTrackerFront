@@ -18,6 +18,7 @@ import { BalanceProvider } from "./context/balanceContext";
 import { useAuth } from "./context/authContext";
 import { Login } from "./Authentication/Login";
 import { UsersProvider } from "./context/usersContext";
+import { UnitsProvider } from "./context/unitsContext";
 import RegisterForm from "./Authentication/Register/RegisterForm";
 import RegistrationModal from "./Authentication/Register/RegistrationModal";
 import SuccessfulRegistrationRoute from "./Routes/SuccessfulRegistrationRoute";
@@ -72,8 +73,10 @@ function App() {
               <IncomeExpense />
               <TransactionList />
               <UsersProvider>
-                <NewMovement />
-                <UserNavbar />
+                <UnitsProvider>
+                  <NewMovement />
+                  <UserNavbar />
+                </UnitsProvider>
               </UsersProvider>
             </BalanceProvider>
           </MovementsProvider>

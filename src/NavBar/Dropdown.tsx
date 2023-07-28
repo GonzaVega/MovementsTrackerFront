@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 export type Option = {
   label: string;
   value: string;
+  address?: string;
 };
 
 type DropdownProps = {
