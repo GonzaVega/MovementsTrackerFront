@@ -12,6 +12,7 @@ import Balance from "./Balance";
 import IncomeExpense from "./IncomeExpense";
 import TransactionList from "./TransactionList";
 import NewMovement from "./Movements/Movement/NewMovement";
+import NewUnit from "./Units/Unit/NewUnit";
 import UserNavbar from "./NavBar/UserNavbar";
 import { MovementsProvider } from "./context/context";
 import { BalanceProvider } from "./context/balanceContext";
@@ -74,7 +75,10 @@ function App() {
               <TransactionList />
               <UsersProvider>
                 <UnitsProvider>
-                  <NewMovement />
+                  <div className="new-items-container">
+                    <NewMovement />
+                    <NewUnit />
+                  </div>
                   <UserNavbar />
                 </UnitsProvider>
               </UsersProvider>

@@ -171,11 +171,6 @@ const MovementForm: React.FC<MovementFormProps> = ({ onSubmit }) => {
             </option>
           ))}
         </select>
-        {/* <input
-          type="number"
-          value={formState.unit_id}
-          onChange={handleUnitIdChange}
-        /> */}
       </label>
       <br />
       <label>
