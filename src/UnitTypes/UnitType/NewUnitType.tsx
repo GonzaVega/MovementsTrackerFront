@@ -1,21 +1,17 @@
-import { useState } from "react";
-import Unit from "./Unit";
-import UnitForm from "./UnitForm";
+import React, { useState } from "react";
+import UnitType from "./UnitType";
+import UnitTypeForm from "./UnitTypeForm";
 import { useAuth } from "../../context/authContext";
 import "../../Modal/Modal.css";
 
-const NewUnit: React.FC = () => {
-  const [unitCreation, setUnitCreation] = useState("awaiting new unit");
+const NewUnitType: React.FC = () => {
+  const [unitTypeCreation, setUnitTypeCreation] = useState<any>(null);
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [isModalOpen, setModalOpen] = useState<boolean>(false);
   const { accessToken, client, uid } = useAuth();
 
-  const handleFormSubmit = async (
-    name: string,
-    address: string,
-    unit_type_id: number
-  ) => {
-    const response = await fetch("http://localhost:3001/api/units", {
+  const handleFormSubmit = async (name: string) => {
+    const response = await fetch("http://localhost:3001/api/unit_types", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,14 +20,14 @@ const NewUnit: React.FC = () => {
         client: client!,
       },
       body: JSON.stringify({
-        unit: { name, address, unit_type_id },
+        unit_type: { name },
       }),
     });
 
     if (response.ok) {
-      const newUnit = await response.json();
+      const newUnitType = await response.json();
       setIsFormSubmitted(true);
-      setUnitCreation(newUnit);
+      setUnitTypeCreation(newUnitType);
     } else {
       console.log(`Error: ${response.status} - ${response.statusText}`);
     }
@@ -49,7 +45,7 @@ const NewUnit: React.FC = () => {
   return (
     <div>
       <button className="btn-ok-modal" onClick={handleModalOpen}>
-        <p>New Unit</p>
+        <p>New Unit Type</p>
       </button>
 
       {isModalOpen && (
@@ -58,13 +54,15 @@ const NewUnit: React.FC = () => {
             <span className="close-button" onClick={handleModalClose}>
               &times;
             </span>
-            <h2>New Unit</h2>
-            <UnitForm onSubmit={handleFormSubmit} />
+            <h2>New Unit Type</h2>
+            <UnitTypeForm onSubmit={handleFormSubmit} />
           </div>
         </div>
       )}
 
-      {isFormSubmitted && <Unit data={unitCreation} />}
+      {isFormSubmitted && unitTypeCreation && (
+        <UnitType data={unitTypeCreation} />
+      )}
 
       {isFormSubmitted && isModalOpen && (
         <div className="modal-overlay open">
@@ -73,7 +71,7 @@ const NewUnit: React.FC = () => {
               &times;
             </span>
             <h4 style={{ color: "#44b735" }}>
-              Your Unit was successfully created!
+              Your Unit Type was successfully created!
             </h4>
           </div>
         </div>
@@ -82,4 +80,4 @@ const NewUnit: React.FC = () => {
   );
 };
 
-export default NewUnit;
+export default NewUnitType;

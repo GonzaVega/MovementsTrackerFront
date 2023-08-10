@@ -13,6 +13,7 @@ import IncomeExpense from "./IncomeExpense";
 import TransactionList from "./TransactionList";
 import NewMovement from "./Movements/Movement/NewMovement";
 import NewUnit from "./Units/Unit/NewUnit";
+import NewUnitType from "./UnitTypes/UnitType/NewUnitType";
 import UserNavbar from "./NavBar/UserNavbar";
 import { MovementsProvider } from "./context/context";
 import { BalanceProvider } from "./context/balanceContext";
@@ -26,6 +27,7 @@ import SuccessfulRegistrationRoute from "./Routes/SuccessfulRegistrationRoute";
 import Logout from "./Authentication/Logout";
 import Modal from "./Modal/Modal";
 import logo from "./Shared Resources/Logo Movements Tracker.png";
+import { UnitTypesProvider } from "./context/unitTypeContext";
 
 export interface User {
   id: number;
@@ -74,13 +76,16 @@ function App() {
               <IncomeExpense />
               <TransactionList />
               <UsersProvider>
-                <UnitsProvider>
-                  <div className="new-items-container">
-                    <NewMovement />
-                    <NewUnit />
-                  </div>
-                  <UserNavbar />
-                </UnitsProvider>
+                <UnitTypesProvider>
+                  <UnitsProvider>
+                    <div className="new-items-container">
+                      <NewMovement />
+                      <NewUnit />
+                      <NewUnitType />
+                    </div>
+                    <UserNavbar />
+                  </UnitsProvider>
+                </UnitTypesProvider>
               </UsersProvider>
             </BalanceProvider>
           </MovementsProvider>
