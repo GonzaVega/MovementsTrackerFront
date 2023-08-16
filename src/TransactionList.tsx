@@ -18,9 +18,15 @@ const TransactionList = () => {
             <button className="delete-btn" onClick={handleDelete(item.id)}>
               x
             </button>
-            {item.description}{" "}
+            {item.description}
+            <div className="middle">
+              <b>|{item.unit_name}|</b>{" "}
+            </div>
             <span>
-              {item.concept === "income" ? item.amount : "-" + item.amount}
+              {" "}
+              {item.concept === "income"
+                ? `$${item.amount}`
+                : "-" + `$${item.amount}`}
             </span>
           </li>
         </ul>

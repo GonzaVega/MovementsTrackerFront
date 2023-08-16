@@ -185,6 +185,9 @@ select.form-select {
   list-style-type: none;
   padding: 0;
   margin-bottom: 15px;
+  display: flex;
+  flex-direction: column; /* Cambia a column */
+  align-items: flex-start; /* Alinea los elementos a la izquierda */
 }
 
 .list li {
@@ -196,6 +199,7 @@ select.form-select {
   position: relative;
   padding: 10px;
   margin: 10px 0;
+  width: 100%;
 }
 
 .list li.plus {
@@ -204,6 +208,11 @@ select.form-select {
 
 .list li.minus {
   border-right: 5px solid #c0392b;
+}
+
+.list div.middle {
+  margin-left: 10px; /* Ajusta el margen a tu preferencia */
+  margin-right: auto;
 }
 
 .delete-btn {
@@ -262,7 +271,7 @@ select.form-select {
   position: inherit;
   left: 20px;
   top: 50%;
-  transform: translateY(-160%);
+  transform: translateY(-115%);
   align-items: center;
   z-index: 1;
   margin-bottom: -10%;

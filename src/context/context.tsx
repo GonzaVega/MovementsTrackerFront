@@ -7,6 +7,7 @@ type Movement = {
   description: string;
   date: Date;
   unit_id: number;
+  unit_name: string;
   user_id: number;
   created_at: Date;
   updated_at: Date;
