@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useAuth } from "./context/authContext";
-import { MovementsContext } from "./context/context";
+import { useAuth } from "../context/authContext";
+import { MovementsContext } from "../context/context";
 
 const IncomeExpense = () => {
   const [totalExpenses, setTotalExpenses] = useState();

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
-import { MovementsContext } from "./context/context";
-import "./TransactionList.css"; // Asegúrate de importar los estilos
+import { MovementsContext } from "../context/context";
+import "./TransactionList.css";
 
 const TransactionList = () => {
   const { movements, deleteMovement } = useContext(MovementsContext);
@@ -47,8 +47,8 @@ const TransactionList = () => {
               <span>|{item.unit_name}|</span>
               <span className="transaction-amount">
                 {item.concept === "income"
-                  ? `$${item.amount}`
-                  : `-$${item.amount}`}
+                  ? `$ ${item.amount}`
+                  : `-$ ${item.amount}`}
               </span>
             </div>
             {expandedId === item.id && (
@@ -57,16 +57,16 @@ const TransactionList = () => {
                   <span>
                     Date:
                     <b>
-                      {new Date(item.date).toLocaleDateString()},
-                      {new Date(item.date).toLocaleTimeString([], {
+                      {` ${new Date(item.date).toLocaleDateString()},
+                      ${new Date(item.date).toLocaleTimeString([], {
                         hour: "2-digit",
                         minute: "2-digit",
-                      })}{" "}
+                      })} `}
                     </b>
                     hs.
                   </span>
                   <span>
-                    Movement created by:<b>{item.user_name}</b>
+                    Movement created by: <b>{item.user_name}</b>
                   </span>
                 </div>
               </div>

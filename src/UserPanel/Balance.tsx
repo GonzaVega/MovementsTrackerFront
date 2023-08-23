@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { BalanceContext } from "./context/balanceContext";
+import { BalanceContext } from "../context/balanceContext";
 const Balance = () => {
   const balance = useContext(BalanceContext);
 
