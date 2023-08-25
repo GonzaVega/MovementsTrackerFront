@@ -1,9 +1,11 @@
 import React, { useState, useContext } from "react";
 import { MovementsContext } from "../context/context";
 import "./TransactionList.css";
+import { useAuth } from "../context/authContext";
 
 const TransactionList = () => {
   const { movements, deleteMovement } = useContext(MovementsContext);
+  const { userName } = useAuth();
   const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const handleDelete = async (id: number) => {
@@ -20,13 +22,19 @@ const TransactionList = () => {
 
   return (
     <div className="transaction-list">
-      <h3>History</h3>
+      <h3>{`${userName}'s `}Movements</h3>
       {movements.map((item: any) => (
         <ul
           className={`transaction-item ${
             expandedId === item.id ? "expanded" : ""
           }`}
           key={item.id}
+          style={{
+            borderRight:
+              item.concept === "income"
+                ? "5px solid #2ecc71"
+                : "5px solid #c0392b",
+          }}
         >
           <button
             className="delete-button"
@@ -46,9 +54,11 @@ const TransactionList = () => {
               {item.description}
               <span>|{item.unit_name}|</span>
               <span className="transaction-amount">
-                {item.concept === "income"
-                  ? `$ ${item.amount}`
-                  : `-$ ${item.amount}`}
+                <p>
+                  {item.concept === "income"
+                    ? `$ ${item.amount}`
+                    : `-$ ${item.amount}`}
+                </p>
               </span>
             </div>
             {expandedId === item.id && (

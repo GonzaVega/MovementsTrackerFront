@@ -6,6 +6,7 @@ export interface AuthContextProps {
   accessToken: string | null;
   client: string | null;
   uid: string | null;
+  userName: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
 }
@@ -16,6 +17,7 @@ export const AuthContext = createContext<AuthContextProps>({
   accessToken: null,
   client: null,
   uid: null,
+  userName: null,
   login: async () => {},
   logout: () => {},
 });
@@ -35,6 +37,9 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(
     Boolean(accessToken !== null)
   );
+  const [userName, setUserName] = useState<string | null>(
+    localStorage.getItem("userName")
+  );
 
   const login = async (email: string, password: string) => {
     try {
@@ -51,15 +56,23 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
           token: response.headers.get("access-token"),
           uid: response.headers.get("uid"),
           client: response.headers.get("client"),
+          userName: response.headers.get("name"),
         };
 
-        if (headers.token && headers.uid && headers.client) {
+        if (
+          headers.token &&
+          headers.uid &&
+          headers.client &&
+          headers.userName
+        ) {
           localStorage.setItem("accessToken", headers.token);
           localStorage.setItem("uid", headers.uid);
           localStorage.setItem("client", headers.client);
+          localStorage.setItem("userName", headers.userName);
           setAccessToken(headers.token);
           setUid(headers.uid);
           setClient(headers.client);
+          setUserName(headers.userName);
           setIsAuthenticated(true);
         }
       } else {
@@ -110,6 +123,7 @@ export const AuthProvider: React.FC<React.PropsWithChildren<{}>> = ({
         accessToken,
         client,
         uid,
+        userName,
         login,
         logout,
       }}

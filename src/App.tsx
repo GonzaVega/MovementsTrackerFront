@@ -28,6 +28,8 @@ import Logout from "./Authentication/Logout";
 import Modal from "./Modal/Modal";
 import logo from "./Shared Resources/Logo Movements Tracker.png";
 import { UnitTypesProvider } from "./context/unitTypeContext";
+import UserUnits from "./UserPanel/UserUnits/UserUnits";
+import { UserUnitsProvider } from "./context/userUnitsContext";
 
 export interface User {
   id: number;
@@ -78,12 +80,15 @@ function App() {
               <UsersProvider>
                 <UnitTypesProvider>
                   <UnitsProvider>
-                    <div className="new-items-container">
-                      <NewMovement />
-                      <NewUnit />
-                      <NewUnitType />
-                    </div>
-                    <UserNavbar />
+                    <UserUnitsProvider>
+                      <div className="new-items-container">
+                        <NewMovement />
+                        <NewUnit />
+                        <NewUnitType />
+                      </div>
+                      <UserUnits />
+                    </UserUnitsProvider>
+                    {/* <UserNavbar /> */}
                   </UnitsProvider>
                 </UnitTypesProvider>
               </UsersProvider>
